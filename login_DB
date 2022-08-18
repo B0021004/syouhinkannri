@@ -1,0 +1,73 @@
+CREATE TABLE Users_table(
+    UserID      varchar(20),
+    UserName    nvarchar(30),
+    password    varchar(20),
+    eMail      varchar(30),
+    permission  INT,
+
+    PRIMARY KEY(UserID)
+);
+
+CREATE TABLE Type_table(
+    TypeID      INT,
+    TypeName    nvarchar(30),
+
+    PRIMARY KEY(TypeID)
+);
+
+CREATE TABLE Status_table(
+    StatusID      INT,
+    status        nvarchar(30),
+
+    PRIMARY KEY(StatusID)
+);
+
+CREATE TABLE Products_table(
+    ProductID       INT     AUTO_INCREMENT,
+    TypeID          INT,
+    ProductName     nvarchar(30),
+    price           INT,
+    OrderDate       DATE,
+    OrderStatusID   INT,
+    OrderUserID     varchar(20),
+    DeliveryDate    DATE,
+
+    PRIMARY KEY(ProductID),
+    FOREIGN KEY(TypeID) REFERENCES Type_table(TypeID),
+    FOREIGN KEY(OrderStatusID) REFERENCES Status_table(StatusID),
+    FOREIGN KEY(OrderUserID) REFERENCES Users_table(UserID)
+);
+
+
+load data local
+    infile 'login_Users.csv'
+into table
+    order.Users_table
+fields
+    terminated by ','
+    enclosed by "'";
+
+load data local
+    infile 'login_Type.csv'
+into table
+    order.Type_table
+fields
+    terminated by ','
+    enclosed by "'";
+
+load data local
+    infile 'login_Status.csv'
+into table
+    order.Status_table
+fields
+    terminated by ','
+    enclosed by "'";
+
+load data local
+    infile 'login_Products.csv'
+into table
+    order.Products_table
+fields
+    terminated by ','
+    enclosed by "'";
+
